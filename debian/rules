@@ -32,10 +32,11 @@ endif
 
 override_dh_auto_build: vet
 	# configd/opd AAA plugin
-	cd $(GOBUILDDIR)/src; \
-	GOPATH=$(GO_PATH) \
-	go build $(BUILD_ARGS_GO) -buildmode=plugin \
-		-o tacplus.so eng.vyatta.net/tacplus/aaa-plugin/
+	echo "Skipping aaa"
+#	cd $(GOBUILDDIR)/src; \
+#	GOPATH=$(GO_PATH) \
+#	go build $(BUILD_ARGS_GO) -buildmode=plugin \
+#		-o tacplus.so eng.vyatta.net/tacplus/aaa-plugin/
 
 vet:
 	echo "Skipping vet"
