@@ -5,6 +5,10 @@ export DH_GOPKG := eng.vyatta.net/tacplus
 GOBUILDDIR := _build
 GO_PATH := $(CURDIR)/$(GOBUILDDIR)
 
+# The plugin and vet are built in GOPATH mode, like configd/opd (Go >= 1.16
+# defaults to module mode).
+export GO111MODULE := off
+
 # For golang plugins to work with the modules that load them, the paths to
 # common code must match when building. This means that we need to use
 # GOBUILDDIR in both plugin and plugin-using code so that the paths match.
@@ -32,13 +36,11 @@ endif
 
 override_dh_auto_build: vet
 	# configd/opd AAA plugin
-	echo "Skipping aaa"
-#	cd $(GOBUILDDIR)/src; \
-#	GOPATH=$(GO_PATH) \
-#	go build $(BUILD_ARGS_GO) -buildmode=plugin \
-#		-o tacplus.so eng.vyatta.net/tacplus/aaa-plugin/
+	cd $(GOBUILDDIR)/src; \
+	GOPATH=$(GO_PATH) \
+	go build $(BUILD_ARGS_GO) -buildmode=plugin \
+		-o tacplus.so eng.vyatta.net/tacplus/aaa-plugin/
 
 vet:
-	echo "Skipping vet"
-#	GOPATH=$(GO_PATH) go vet $$(find . -type f -name \*.go | \
-#	xargs dirname | sort -u | grep -v "/vendor/");
+	GOPATH=$(GO_PATH) go vet $$(find . -type f -name \*.go | \
+	xargs dirname | sort -u | grep -v "/vendor/");
